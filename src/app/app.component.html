@@ -1,0 +1,28 @@
+<ng-container *ngIf="isAuthenticated(); else login" class="container">
+  <!-- <app-header></app-header> -->
+  <!-- <div class="row">
+    <div class="col-3">
+      <app-sidebar class="sidebar"></app-sidebar> 
+    </div>
+    <div class="col-9">
+      
+    </div> -->
+    <app-dashboard></app-dashboard>
+  <!-- </div> -->
+  
+  
+</ng-container>
+
+<ng-template #login>
+  <ng-container *ngIf="!showRegistration && !showOTP; else registrationOTP">
+    <app-login></app-login>
+  </ng-container>
+  <ng-template #registrationOTP>
+    <ng-container *ngIf="showRegistration">
+      <app-registration></app-registration>
+    </ng-container>
+    <ng-container *ngIf="showOTP">
+      <app-email-verification></app-email-verification>
+    </ng-container>
+  </ng-template>
+</ng-template>
