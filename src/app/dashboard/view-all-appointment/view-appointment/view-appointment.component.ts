@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppointmentService } from 'src/app/service/appointment.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-view-appointment',
   templateUrl: './view-appointment.component.html',
@@ -29,6 +30,7 @@ export class ViewAppointmentComponent implements OnInit {
   onFileSelected(event: any, item: any) {
     const file: File = event.target.files[0];
 
+    console.log(item.testId)
     if (file) {
       const reader = new FileReader();
 
@@ -36,14 +38,26 @@ export class ViewAppointmentComponent implements OnInit {
         const binaryString: string = reader.result as string;
         const base64Encoded: string = btoa(binaryString);
         console.log(base64Encoded);
+
+        this.appointmentService.uploadTest(this.token,item.testId,base64Encoded).subscribe(res=>{
+          console.log(res)
+          Swal.fire({
+            title: "Good job!",
+            text: "Report upload successfully",
+            icon: "success"
+          });
+          
+          this.findTestById();
+        })
       };
       reader.readAsBinaryString(file);
     }
   }
 
   downloadReport(item:any){
+    console.log(item)
 
-    let base64Encoded = ''
+    let base64Encoded = item.report
     let fileName= ''
     const binaryString: string = atob(base64Encoded);
 
